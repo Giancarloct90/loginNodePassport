@@ -10,14 +10,14 @@ const bcrypt = require('bcrypt');
 require('.././database');
 
 passport.serializeUser((user, done) => {
-    done(null, user);
+    done(null, user.user_Codigo);
 });
 
 passport.deserializeUser((id, done) => {
-    sqlserver.query(`SELECT * FROM Users WHERE user_Nombre =` + `'${id}'` + ``).then((user) => {
-        done(err, user.recordset[0]);
+    sqlserver.query(`SELECT * FROM Users WHERE user_Codigo =` + `${id}` + ``).then((user) => {
+        done(null, user.recordset[0]);
     }).catch((e) => {
-
+        console.log('Problem deserializerUser', e)
     });
 });
 
@@ -27,24 +27,20 @@ passport.use('local-signup', new LocalStrategy({
     passReqToCallback: true
 }, async (req, email, password, done) => {
     try {
-        let user = await sqlserver.query(`SELECT * FROM Users WHERE user_Nombre =` + `'${email}'` + ``);
+        let user = await sqlserver.query(`SELECT * FROM Users WHERE user_Email =` + `'${email}'` + ``);
         if (user.rowsAffected[0] == 0) {
             console.log('No existe el user');
-            return done(null, false, {
-                message: 'No existe el user'
-            });
+            return done(null, false, req.flash('signinMessage', 'El usuario o el password son incorrectos'));
         }
         if (user.rowsAffected[0] == 1) {
             try {
                 if (await bcrypt.compare(password, user.recordset[0].user_Password)) {
-                    console.log(user.recordset);
+                    console.log(user.recordset[0]);
                     console.log('Usuario Existe');
-                    return done(null, user.recordset);
+                    return done(null, user.recordset[0]);
                 } else {
                     console.log('Password incorrect');
-                    return done(null, false, {
-                        message: 'password incorrect'
-                    });
+                    return done(null, false, req.flash('signinMessage', 'El usuario o el password son incorrectos'));
                 }
             } catch (e) {
                 return done(e)

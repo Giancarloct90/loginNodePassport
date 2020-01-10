@@ -2,7 +2,7 @@ GET http://localhost:4000/
 
 ###
 
-GET http://localhost:4000/signupUser
+GET http://localhost:4000/viewUsers
 
 ###
 
@@ -10,7 +10,16 @@ POST http://localhost:4000/signup
 content-type: application/json
 
 {
+    "email": "jack@jack",
+    "password": "123456"
+}
+###
+
+POST http://localhost:4000/signin2
+content-type: application/json
+
+{
     "email": "gian@gian",
     "password": "123456"
 }
-###rs
+###

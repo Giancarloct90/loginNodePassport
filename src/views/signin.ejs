@@ -1,8 +1,32 @@
-<h1>Sign IN</h1>
-<form action="/signin2" method="POST">
-    <input type="email" name="email" placeholder="Insert Email">
-    <input type="password" name="password" placeholder="Insert password">
-    <button>
-        Send
-    </button>
-</form>
+<%- layout('layouts/main') %>
+
+
+<div class="text-center mainTitle">
+    <h1>Sign IN</h1>
+</div>
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4 text-center">
+        <div class="text-center contentDiv">
+            <form action="/signin2" method="POST">
+                <input type="email" name="email" placeholder="Insert Email" required>
+                <br> <br>
+                <input type="password" name="password" placeholder="Insert password" required>
+                <br>
+                <br>
+                <button class="btn btn-info">
+                    Send
+                </button>
+            </form>
+        </div>
+        <div class="row">
+            <br><br><br>
+            <% if(signinMessage.length >0) { %>
+            <div class="alert alert-danger" role="alert">
+                <strong><%= signinMessage %></strong>
+            </div>
+            <% } %>
+        </div>
+    </div>
+    <div class="col-md-4"></div>
+</div>

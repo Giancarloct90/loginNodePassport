@@ -52,3 +52,15 @@ bcrypt.hash(password, bcrypt.genSaltSync(10))
     .catch((err) => {
         console.log('Error to hash the passss');
     });
+
+const express = require('express');
+const app = express();
+
+(async () => {
+    try {
+        await app.listen(3000);
+        console.log('Server On');
+    } catch (e) {
+        console.log('Error', e);
+    }
+})();
